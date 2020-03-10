@@ -3,6 +3,7 @@ import { ServerRoute, Request, Util } from '@hapi/hapi';
 import { serverMethods } from '../../server';
 import failAction from '../../lib/fail-action';
 import generate from 'nanoid/generate';
+import nodemailer from 'nodemailer';
 
 /* eslint-disable */
 const emailBody = Joi.object({ email: Joi.string().email() })
@@ -13,7 +14,13 @@ interface TokenResponse {
     token: string
 }
 
-function createToken(request: Request): TokenResponse {
+const transporter = nodemailer.createTransport({
+    host: 'mailhog',
+    port: 1025,
+    secure: false
+});
+
+async function createToken(request: Request): Promise<TokenResponse> {
     const methods = serverMethods(request);
     const projectDatasource = methods.projectDatasource();
 
@@ -21,9 +28,13 @@ function createToken(request: Request): TokenResponse {
     const token = generate('1234567890abcdef', 6);
     projectDatasource.setToken(email, token);
 
-    return {
-        token
-    }
+    return transporter.sendMail({
+        from: 'help@hingehealth.com',
+        to: email, // An array if you have multiple recipients.
+        subject: 'One Time Token',
+        //You can use "html:" to send HTML email content. It's magic!
+        html: `Temporary token: ${token}`,
+    }).then(() => ({ token }))
 }
 
 const getNewToken: ServerRoute = {
