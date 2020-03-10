@@ -25,7 +25,7 @@ async function createToken(request: Request): Promise<TokenResponse> {
     const projectDatasource = methods.projectDatasource();
 
     const { email } = request.payload as Util.Dictionary<string>;
-    const token = generate('1234567890abcdef', 6);
+    const token = generate('1234567890', 6);
     projectDatasource.setToken(email, token);
 
     return transporter.sendMail({

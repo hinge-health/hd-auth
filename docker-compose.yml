@@ -4,7 +4,7 @@ services:
   auth:
     environment:
       NODE_ENV: docker
-      DB_URL:  postgresql://localhost:5432/hinge_dev_db
+      DB_URL:  postgres://root:123@postgres/hinge_dev_db
     build: .
     restart: always
     command: 'npm run start:dev'
@@ -22,3 +22,7 @@ services:
       - 8025:8025
     healthcheck:
       test: echo | telnet 127.0.0.1 1025
+  postgres:
+    build: ./postgres
+    ports:
+      - 65432:5432
