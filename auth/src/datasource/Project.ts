@@ -1,18 +1,18 @@
 import { IDatabase } from 'pg-promise';
 import Config from '../lib/config';
-import logger, { Logger } from '../lib/logger';
+// import logger, { Logger } from '../lib/logger';
 import bcrypt from 'bcrypt';
 import getConnection from '../lib/connection';
 
 export default class ProjectDatasource {
     private connection: IDatabase<unknown>;
     private tokenCache: any;
-    private logger: Logger;
+    // private logger: Logger;
 
     constructor(config: Config, connection: IDatabase<unknown>) {
         this.connection = connection || getConnection(config);
         this.tokenCache = {}
-        this.logger = logger;
+        // this.logger = logger;
     }
 
     public async setToken(email: string, token: string) {

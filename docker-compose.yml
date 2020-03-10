@@ -5,11 +5,11 @@ services:
     environment:
       NODE_ENV: docker
       DB_URL:  postgres://root:123@postgres/hinge_dev_db
-    build: .
+    build: ./auth
     restart: always
     command: 'npm run start:dev'
     volumes:
-      - ./src:/usr/src/app/src
+      - ./auth/src:/usr/src/app/src
     ports:
       - 3001:3001
   mailhog:
@@ -26,3 +26,22 @@ services:
     build: ./postgres
     ports:
       - 65432:5432
+  rabbitmq: # login guest:guest
+    image: rabbitmq:3-management
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
+    ports:
+    - "4369:4369"
+    - "5671:5671"
+    - "5672:5672"
+    - "25672:25672"
+    - "15671:15671"
+    - "15672:15672"
+  emailer:
+    build: ./emailer
+    restart: always
+    command: 'npm run start:dev'
+    volumes:
+      - ./emailer/src:/usr/src/app/src
+    
