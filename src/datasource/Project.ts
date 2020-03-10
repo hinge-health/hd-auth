@@ -1,36 +1,49 @@
-import {IDatabase} from 'pg-promise';
+import { IDatabase } from 'pg-promise';
 import Config from '../lib/config';
-import getConnection from '../lib/connection';
+import logger, { Logger } from '../lib/logger';
+// import getConnection from '../lib/connection';
 
 export default class ProjectDatasource {
-  private connection: IDatabase<unknown>;
+    // private connection: IDatabase<unknown>;
+    private tokenCache: any;
+    private logger: Logger;
 
-  constructor(config: Config, connection: IDatabase<unknown>) {
-    this.connection = connection || getConnection(config);
-  }
+    constructor(config: Config, connection: IDatabase<unknown>) {
+        // this.connection = connection || getConnection(config);
+        this.tokenCache = {}
+        this.logger = logger;
+    }
 
-  public async selectAll(): Promise<any> {
-    const SELECT_ALL = `
-  SELECT
-    id,
-    name,
-    created,
-    updated
-  FROM "project"
-`;
-    return await this.connection.manyOrNone(SELECT_ALL);
-  }
+    public setToken(email: string, token: string) {
+        this.tokenCache[email] = {
+            timestamp: Date.now(),
+            token: token,
+        }
+        this.logger.info('Token Cache');
+    }
 
-  public async selectById(id: number): Promise<any> {
-    const SELECT_BY_ID = `
-  SELECT
-    id,
-    name,
-    created,
-    updated
-  FROM "project"
-  WHERE id = $[id]
-`;
-    return await this.connection.oneOrNone(SELECT_BY_ID, {id});
-  }
+    //   public async selectAll(): Promise<any> {
+    //     const SELECT_ALL = `
+    //   SELECT
+    //     id,
+    //     name,
+    //     created,
+    //     updated
+    //   FROM "project"
+    // `;
+    //     return await this.connection.manyOrNone(SELECT_ALL);
+    //   }
+
+    //   public async selectById(id: number): Promise<any> {
+    //     const SELECT_BY_ID = `
+    //   SELECT
+    //     id,
+    //     name,
+    //     created,
+    //     updated
+    //   FROM "project"
+    //   WHERE id = $[id]
+    // `;
+    //     return await this.connection.oneOrNone(SELECT_BY_ID, {id});
+    //   }
 }

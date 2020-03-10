@@ -1,4 +1,4 @@
 import status from './status';
-import getProjectById from './project/get';
+import getNewToken from './token/post'
 
-export default [status, getProjectById];
+export default [status, getNewToken];

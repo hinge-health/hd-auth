@@ -21,6 +21,7 @@
     "hapi-auth-jwt2": "^9.0.1",
     "hapi-swagger": "^12.1.0",
     "jest-junit": "^10.0.0",
+    "nanoid": "^2.1.11",
     "nodemailer": "^6.4.4",
     "pg-promise": "^10.4.3"
   },
@@ -28,6 +29,7 @@
     "@types/boom": "^7.3.0",
     "@types/graphql": "^14.5.0",
     "@types/jest": "^25.1.2",
+    "@types/nanoid": "^2.1.0",
     "@types/node": "^13.7.1",
     "@types/nodemailer": "^6.4.0",
     "http-status-codes": "^1.4.0",
