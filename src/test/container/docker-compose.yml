@@ -1,0 +1,16 @@
+version: '2.1'
+
+services:
+  idiomatic-hapi-ts-server-test:
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    command: tail -f /dev/null
+    environment:
+      UV_THREADPOOL_SIZE: 128
+      NODE_ENV: test
+      DB_URL: postgres://root:123@postgres/project
+    volumes:
+      - ../../../:/usr/src/app/
+  postgres:
+    build: ../../../postgres

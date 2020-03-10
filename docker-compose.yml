@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  auth:
+    environment:
+      NODE_ENV: docker
+      DB_URL:  postgresql://localhost:5432/hinge_dev_db
+    build: .
+    restart: always
+    command: 'npm run start:dev'
+    volumes:
+      - ./src:/usr/src/app/src
+    ports:
+      - 3001:3001
+  mailhog:
+    image: mailhog/mailhog:latest
+    user: root
+    expose:
+      - 1025
+      - 8025
+    ports:
+      - 8025:8025
+    healthcheck:
+      test: echo | telnet 127.0.0.1 1025
